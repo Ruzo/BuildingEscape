@@ -21,7 +21,8 @@ void UPositionReporter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	FString ObjectName = GetOwner()->GetName();
+	UE_LOG(LogTemp, Warning, TEXT("POSITION REPORTER FOR %s"), *ObjectName);
 	
 }
 
