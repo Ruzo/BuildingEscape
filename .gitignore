@@ -5,4 +5,5 @@ Build/
 Binaries/
 DerivedDataCache/
 BuildingEscape.VC.opendb
-Content/StarterContent/
+Content/StarterContent/Textures/
+Content/StarterContent/HDRI/
