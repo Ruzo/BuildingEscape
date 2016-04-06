@@ -24,5 +24,18 @@ public:
 
 private:
 	float reach = 100.f;
-
+	FVector PlayerLocation;
+	FRotator PlayerRotation;
+	FVector LineTraceEnd;
+	void GetPlayerViewpoint();
+	FHitResult MovableHit;
+	FString ActorHit;
+	UPhysicsHandleComponent *PhysicsHandle = nullptr;
+	UInputComponent *Input = nullptr;
+	void Grab();
+	void Release();
+	void SetupPhysicsHandle();
+	void BindInput();
+	FHitResult GetHitResult();
+	void PlaceGrabbedComponent();
 };
