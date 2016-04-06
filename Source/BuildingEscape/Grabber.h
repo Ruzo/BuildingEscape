@@ -26,8 +26,8 @@ private:
 	float reach = 100.f;
 	FVector PlayerLocation;
 	FRotator PlayerRotation;
-	FVector LineTraceEnd;
 	void GetPlayerViewpoint();
+	FVector GetPlayerReachPoint();
 	FHitResult MovableHit;
 	FString ActorHit;
 	UPhysicsHandleComponent *PhysicsHandle = nullptr;
@@ -36,6 +36,6 @@ private:
 	void Release();
 	void SetupPhysicsHandle();
 	void BindInput();
-	FHitResult GetHitResult();
+	FHitResult GetFirstPhysicsBody();
 	void PlaceGrabbedComponent();
 };

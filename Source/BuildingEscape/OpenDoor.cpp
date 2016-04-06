@@ -31,11 +31,11 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if (PressurePlate->IsOverlappingActor(ActorThatOpens)) {
+	if ((OverLappingActorsMass() >= 70.f) && !OnTrigger) {
 		OpenDoor();
 		OnTrigger = true;
 	}
-	else if (OnTrigger) {
+	else if ((OverLappingActorsMass() < 70.f) && OnTrigger) {
 		CloseDoor();
 		OnTrigger = false;
 	}
@@ -50,5 +50,20 @@ void UOpenDoor::OpenDoor()
 void UOpenDoor::CloseDoor()
 {
 	Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+}
+
+float UOpenDoor::OverLappingActorsMass()
+{
+	float Mass = 0.0f;
+	TArray<AActor*> OverLappingActors;
+
+	PressurePlate->GetOverlappingActors(OverLappingActors);
+	for (AActor *Actor : OverLappingActors) {
+		Mass += Actor->GetRootPrimitiveComponent()->GetMass();
+	}
+	if(Mass > 0.f) {
+	UE_LOG(LogTemp, Warning, TEXT("Mass: %f"), Mass)
+		}
+	return Mass;
 }
 

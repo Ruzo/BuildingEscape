@@ -35,4 +35,5 @@ private:
 	AActor *Owner;
 	AActor *ActorThatOpens;
 	bool OnTrigger;
+	float OverLappingActorsMass();
 };
