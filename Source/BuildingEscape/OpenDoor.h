@@ -30,10 +30,9 @@ private:
 	float OpenAngle = 100.0f;
 
 	UPROPERTY(EditAnywhere)
-	ATriggerVolume* PressurePlate;
+	ATriggerVolume* PressurePlate = nullptr;
 
-	AActor *Owner;
-	AActor *ActorThatOpens;
+	AActor *Owner = nullptr;
 	bool OnTrigger;
 	float OverLappingActorsMass();
 };

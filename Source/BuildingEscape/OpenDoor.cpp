@@ -21,8 +21,10 @@ void UOpenDoor::BeginPlay()
 {
 	Super::BeginPlay();
 	Owner = GetOwner();
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 	OnTrigger = false;
+	if (!PressurePlate) {
+		UE_LOG(LogTemp, Error, TEXT("The object %s has no PressurePlate component!"), *GetOwner()->GetName())
+	}
 }
 
 
@@ -43,27 +45,28 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 void UOpenDoor::OpenDoor()
 {
-	// FRotator Rotator(0.0f, OpenAngle, 0.0f);
-	Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
+	if (Owner) {
+		Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
+	}
 }
 
 void UOpenDoor::CloseDoor()
 {
-	Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+	if (Owner) {
+		Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+	}
 }
 
 float UOpenDoor::OverLappingActorsMass()
 {
 	float Mass = 0.0f;
 	TArray<AActor*> OverLappingActors;
-
-	PressurePlate->GetOverlappingActors(OverLappingActors);
-	for (AActor *Actor : OverLappingActors) {
-		Mass += Actor->GetRootPrimitiveComponent()->GetMass();
-	}
-	if(Mass > 0.f) {
-	UE_LOG(LogTemp, Warning, TEXT("Mass: %f"), Mass)
+	if (PressurePlate) {
+		PressurePlate->GetOverlappingActors(OverLappingActors);
+		for (auto& Actor : OverLappingActors) {
+			Mass += Actor->GetRootPrimitiveComponent()->GetMass();
 		}
+	}
 	return Mass;
 }
 

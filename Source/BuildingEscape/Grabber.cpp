@@ -36,7 +36,6 @@ void UGrabber::GetPlayerViewpoint()
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(PlayerLocation, PlayerRotation);
 }
 
-// Get player viewpoint
 FVector UGrabber::GetPlayerReachPoint()
 {
 	GetPlayerViewpoint();
@@ -49,16 +48,19 @@ void UGrabber::Grab()
 	auto HitActor = HitResult.GetActor();
 	if (HitActor) {
 		UE_LOG(LogTemp, Warning, TEXT("%s WAS GRABBED!"), *HitActor->GetName())
-		// Attach PhysicsHandle
 		auto ComponentToGrab = HitResult.GetComponent();
-		PhysicsHandle->GrabComponent(ComponentToGrab, NAME_None, ComponentToGrab->GetOwner()->GetActorLocation(), true);
+		if (PhysicsHandle) {
+			PhysicsHandle->GrabComponent(ComponentToGrab, NAME_None, ComponentToGrab->GetOwner()->GetActorLocation(), true);
+		}
 	}
 }
 
 void UGrabber::Release()
 {
-	if (PhysicsHandle->GrabbedComponent) {
-		PhysicsHandle->ReleaseComponent();
+	if (PhysicsHandle) {
+		if (PhysicsHandle->GrabbedComponent) {
+			PhysicsHandle->ReleaseComponent();
+		}
 	}
 }
 
@@ -101,9 +103,11 @@ FHitResult UGrabber::GetFirstPhysicsBody()
 
 void UGrabber::PlaceGrabbedComponent()
 {
-	if (PhysicsHandle->GrabbedComponent) {
-		GetPlayerReachPoint();
-		PhysicsHandle->SetTargetLocationAndRotation(GetPlayerReachPoint(), PlayerRotation);
+	if (PhysicsHandle) {
+		if (PhysicsHandle->GrabbedComponent) {
+			GetPlayerReachPoint();
+			PhysicsHandle->SetTargetLocationAndRotation(GetPlayerReachPoint(), PlayerRotation);
+		}
 	}
 }
 
