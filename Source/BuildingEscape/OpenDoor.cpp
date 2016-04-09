@@ -33,11 +33,11 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	if ((OverLappingActorsMass() >= 70.f) && !OnTrigger) {
+	if ((OverLappingActorsMass() >= TriggerMass) && !OnTrigger) {
 		OpenDoor();
 		OnTrigger = true;
 	}
-	else if ((OverLappingActorsMass() < 70.f) && OnTrigger) {
+	else if ((OverLappingActorsMass() < TriggerMass) && OnTrigger) {
 		CloseDoor();
 		OnTrigger = false;
 	}
@@ -46,14 +46,16 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 void UOpenDoor::OpenDoor()
 {
 	if (Owner) {
-		Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
+		OnOpenRequest.Broadcast();
+		// Owner->SetActorRotation(FRotator(0.0f, OpenAngle, 0.0f));
 	}
 }
 
 void UOpenDoor::CloseDoor()
 {
 	if (Owner) {
-		Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
+		OnCloseRequest.Broadcast();
+		// Owner->SetActorRotation(FRotator(0.0f, 0.0f, 0.0f));
 	}
 }
 
